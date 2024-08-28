@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+
+<!-- Main Content -->
+<div class="container-fluid pt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="container">
+        <h2 class="mb-4">Welcome to Customer's Dashboard</h2>
+
+        <div class="row g-4 mb-5">
+          <div class="col-md-6">
+            <div class="card shadow h-100">
+              <div class="card-body">
+                <h3 class="card-title">Your Current Points</h3>
+                <p class="card-text">
+                  <strong>Current Points:</strong> {{ points['CurrentPoints'] or
+                  0 }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card shadow h-100">
+              <div class="card-body">
+                <h3 class="card-title">Account Holder Application Status</h3>
+                {% if account_status %}
+                <p class="card-text">
+                  Your account holder application status is:
+                  <strong>{{ account_status }}</strong>
+                </p>
+                {% else %}
+                <p class="card-text">
+                  You have not applied for account holder yet.
+                </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <h3>Latest News</h3>
+          <div class="row g-3">
+            {% for news in news %}
+            <div class="col-md-6 col-lg-4">
+              <div class="card shadow h-100">
+                <div class="card-body">
+                  <h5 class="card-title">{{ news['Title'] }}</h5>
+                  <p class="card-text">
+                    <small
+                      >Expired on {{ news['ExpirationDate'] | format_date
+                      }}</small
+                    >
+                  </p>
+                  <a
+                    href="{{ url_for('viewNews', id=news['NewsID']) }}"
+                    class="btn btn-outline-primary"
+                    >Details</a
+                  >
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="row g-4 mb-5 mt-2">
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow h-100">
+              <img
+                src="{{ url_for('static', filename='Images/fresh2.jpg') }}"
+                class="card-img-top"
+                alt="Workshops Image"
+              />
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fas fa-book"></i> Place Your Orders
+                </h5>
+                <div class="d-grid gap-2">
+                  <a
+                    href="{{ url_for('list_products') }}"
+                    class="btn btn-outline-primary"
+                    >All products</a
+                  >
+                  <a
+                    href="{{ url_for('list_boxes') }}"
+                    class="btn btn-outline-secondary"
+                    >Premade box</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

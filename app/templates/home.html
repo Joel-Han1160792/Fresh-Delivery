@@ -1,0 +1,331 @@
+{% extends 'base.html' %} {% block title %}Fresh Delivery{% endblock %} {% block
+content%}
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="about-img position-relative overflow-hidden p-5 pe-0">
+          <img class="img-fluid w-100" src="../static/img/about.jpg" />
+        </div>
+      </div>
+      <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+        <h1 class="display-5 mb-4">Order Our Premade Box</h1>
+        <p class="mb-4">Order your premade box today!</p>
+        <p>
+          <i class="fa fa-check text-primary me-3"></i>Fast delivery services
+        </p>
+        <p>
+          <i class="fa fa-check text-primary me-3"></i>Premade Box has large,
+          medium or small size.
+        </p>
+        <p>
+          <i class="fa fa-check text-primary me-3"></i>Natural, fresh, and
+          healthy are guaranteed
+        </p>
+        <p>
+          <a
+            class="btn btn-lg btn-secondary rounded-pill py-3 px-5"
+            href="/products"
+            >Order Now</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About End -->
+
+<!-- Feature Start -->
+<div class="container-fluid bg-light bg-icon mt-5 py-6">
+  <div class="container">
+    <div
+      class="section-header text-center mx-auto mb-5 wow fadeInUp"
+      data-wow-delay="0.1s"
+      style="max-width: 500px"
+    >
+      <h1 class="display-5 mb-3">Why us</h1>
+      <p>
+        Our best organic vegetables and fruits can be deliveried in Auckland,
+        Hamilton, Christchurch and Invercargll.
+      </p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="bg-white text-center h-100 p-4 p-xl-5 feature-card">
+          <div class="img-fluid mb-4">
+            <i class="bi bi-truck"></i>
+          </div>
+          <h4 class="mb-3">Fast Delivery</h4>
+          <p class="mb-4">
+            Our food can be deliveried in Auckland, Hamilton, Christchurch and
+            Invercargll.
+          </p>
+          <a
+            class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill"
+            href=""
+            >Read More</a
+          >
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+        <div class="bg-white text-center h-100 p-4 p-xl-5 feature-card">
+          <div class="img-fluid mb-4">
+            <i class="bi bi-piggy-bank"></i>
+          </div>
+          <h4 class="mb-3">Good Price</h4>
+          <p class="mb-4">
+            Our best organic vegetables and fruits also have a good price to
+            save your money.
+          </p>
+          <a
+            class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill"
+            href=""
+            >Read More</a
+          >
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="bg-white text-center h-100 p-4 p-xl-5 feature-card">
+          <div class="img-fluid mb-4">
+            <i class="bi bi-box2"></i>
+          </div>
+
+          <h4 class="mb-3">Premade Box</h4>
+          <p class="mb-4">
+            Premade Box has options in large, medium or small size.
+          </p>
+          <a
+            class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill"
+            href=""
+            >Read More</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Feature End -->
+<!-- Product Search Start -->
+<div class="container-fluid bg-primary bg-icon py-6">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-md-7 wow fadeIn" data-wow-delay="0.1s">
+        <h1 class="display-5 text-white mb-3">Search food here</h1>
+        <p class="text-white mb-3">
+          Our food can be deliveried in Auckland, Hamilton, Christchurch and
+          Invercargll.
+        </p>
+        <!-- <select
+            class="form-select form-select-lg mb-3"
+            aria-label=".form-select-lg example"
+          >
+            <option selected>Choose your location</option>
+            <option value="1">Auckland</option>
+            <option value="2">Christchurch</option>
+            <option value="3">Hamilton</option>
+            <option value="4">Invercargill</option>
+          </select> -->
+        <div class="col-md-12 mx-auto">
+          <form
+            class="foodSearchForm"
+            id="searchForm"
+            method="get"
+            action="/products"
+          >
+            <div class="input-group">
+              <button type="submit" class="btn searchIconBtn">
+                <i class="fa fa-search"></i>
+              </button>
+
+              <input
+                id="searchBox"
+                type="text"
+                class="form-control form-input"
+                placeholder="Product name..."
+                name="name"
+                autocomplete="off"
+                autofocus
+              />
+              <span class="left-pan micBtn"
+                ><i class="fa fa-microphone"></i
+              ></span>
+            </div>
+            <div id="searchTip" class="text-white mt-3"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Product Search End -->
+<!-- Product Cat Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="row g-0 gx-5 align-items-end">
+      <div class="col-lg-6">
+        <div
+          class="section-header text-start mb-5 wow fadeInUp"
+          data-wow-delay="0.1s"
+          style="max-width: 500px"
+        ></div>
+      </div>
+      <div
+        class="col-lg-6 text-start text-lg-end wow slideInRight"
+        data-wow-delay="0.1s"
+      >
+        <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+          <li class="nav-item me-2">
+            <a
+              class="btn btn-outline-primary border-2 active"
+              data-bs-toggle="pill"
+              href="#tab-1"
+              >Vegetable</a
+            >
+          </li>
+          <li class="nav-item me-2">
+            <a
+              class="btn btn-outline-primary border-2"
+              data-bs-toggle="pill"
+              href="#tab-2"
+              >Fruits
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="tab-content">
+      <div id="tab-1" class="tab-pane fade show p-0 active">
+        <div class="row g-4">
+          {% for product in vegList %}
+          <div
+            class="col-xl-3 col-lg-4 col-md-6 fadeInUp"
+            data-wow-delay="0.1s"
+          >
+            <div class="product-item">
+              <div class="position-relative bg-light overflow-hidden">
+                <img
+                  class="img-fluid w-100"
+                  src="/static/img/{{ product['ImageURL']}}"
+                  alt="{{ product['Name'] }}"
+                />
+                <div
+                  class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3"
+                >
+                  New
+                </div>
+              </div>
+              <div class="text-center p-4">
+                <a class="d-block h5 mb-2" href="">{{ product['Name'] }}</a>
+                <span class="text-primary me-1"
+                  >{{ product['Price'] | format_nz_currency }}</span
+                >
+                <span class="text-body text-decoration-line-through"
+                  >${{ product['Price'] | format_nz_currency }}</span
+                >
+              </div>
+              <div class="d-flex border-top">
+                <small class="w-50 text-center border-end py-2">
+                  <a class="text-body" href=""
+                    ><i class="fa fa-eye text-primary me-2"></i>View detail</a
+                  >
+                </small>
+                <small class="w-50 text-center py-2">
+                  <a class="text-body" href=""
+                    ><i class="fa fa-shopping-bag text-primary me-2"></i>Add to
+                    cart</a
+                  >
+                </small>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div id="tab-2" class="tab-pane fade show p-0">
+        <div class="row g-4">
+          {% for product in fruitList %}
+          <div
+            class="col-xl-3 col-lg-4 col-md-6 fadeInUp"
+            data-wow-delay="0.1s"
+          >
+            <div class="product-item">
+              <div class="position-relative bg-light overflow-hidden">
+                <img
+                  class="img-fluid w-100"
+                  src="/static/img/{{ product['ImageURL']}}"
+                  alt="{{ product['Name'] }}"
+                />
+                <div
+                  class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3"
+                >
+                  New
+                </div>
+              </div>
+              <div class="text-center p-4">
+                <a class="d-block h5 mb-2" href="">{{ product['Name'] }}</a>
+                <span class="text-primary me-1"
+                  >{{ product['Price'] | format_nz_currency }}</span
+                >
+                <span class="text-body text-decoration-line-through"
+                  >${{ product['Price'] | format_nz_currency }}</span
+                >
+              </div>
+              <div class="d-flex border-top">
+                <small class="w-50 text-center border-end py-2">
+                  <a class="text-body" href=""
+                    ><i class="fa fa-eye text-primary me-2"></i>View detail</a
+                  >
+                </small>
+                <small class="w-50 text-center py-2">
+                  <a class="text-body" href=""
+                    ><i class="fa fa-shopping-bag text-primary me-2"></i>Add to
+                    cart</a
+                  >
+                </small>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Product Cat End -->
+
+<!-- News Start -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div
+      class="section-header text-center mx-auto mb-5 wow fadeInUp"
+      data-wow-delay="0.1s"
+      style="max-width: 500px"
+    >
+      <h1 class="display-5 mb-3">Latest News</h1>
+      <p>Find out the latest exciting news about Fresh Delivery here.</p>
+    </div>
+    <div class="row g-4">
+      {% for news in newslist%}
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="bg-light p-4">
+          <a class="d-block h5 lh-base mb-4" href="/news/{{news['NewsID']}}">
+            {{news['Title']}}
+          </a>
+          <div class="img-fluid">{{news['Message']}}</div>
+          <div class="text-muted border-top pt-4">
+            <small class="me-3"
+              ><i class="fa fa-calendar text-primary me-2"></i
+              >{{news['DateCreated'] | format_date}}</small
+            >
+          </div>
+        </div>
+      </div>
+
+      {%endfor %}
+    </div>
+  </div>
+</div>
+<!-- News End -->
+{% endblock %}

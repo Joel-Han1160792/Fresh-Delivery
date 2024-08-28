@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block title %}Login{% endblock %} {% block content
+%}
+
+<div class="container p-3 bg-primary bg-icon-login">
+  <h4 class="mt-5">Login</h4>
+
+  <form class="loginForm" action="/login/" method="post">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        placeholder="Username"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        placeholder="Password"
+      />
+    </div>
+    <div><h5 class="text-danger">{{msg}}</h5></div>
+    <button type="submit" class="mb-3 btn btn-dark">Login</button>
+    <div>
+      Don't have an account?
+      <a href="{{url_for('register')}}" class="form-label">Register</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

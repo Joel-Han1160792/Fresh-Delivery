@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Fresh Harvest Products{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icon Font Stylesheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Stylesheet -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap.min.css') }}"
+    />
+    <!-- Animate Stylesheet -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='animate.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      .sidebar {
+        height: calc(
+          100vh - 56px
+        ); /* Adjust this value based on the navbar height */
+        margin-top: 78px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: #111;
+        color: #f3ecec;
+        width: 280px;
+        overflow-y: auto;
+        transition: all 0.3s;
+        padding: 10px;
+      }
+      .main-content {
+        margin-left: 280px;
+        margin-top: 56px;
+        padding-top: 20px;
+        transition: all 0.3s;
+      }
+      .sidebar-hidden {
+        transform: translateX(-280px);
+      }
+      .sidebar-hidden ~ .main-content {
+        margin-left: 0;
+      }
+    </style>
+  </head>
+  <body data-loggedin="{{ session.get('loggedin') }}">
+    <!-- Spinner Start -->
+    <div
+      id="spinner"
+      class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+    >
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    <!-- Navbar Start -->
+    <div class="container-fluid px-0 fixed-top">
+      <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5">
+        {% if session.get('loggedin') %}
+        <button
+          class="btn btn-success"
+          id="sidebarToggle"
+          onclick="toggleSidebar()"
+          style="margin: 10px"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        {% endif %}
+        <a href="/" class="navbar-brand ms-4 ms-lg-0">
+          <img
+            class="logo"
+            src="{{ url_for('static', filename='img/icon-1.png') }}"
+            alt=""
+          />
+        </a>
+        <h1 class="fw-bold text-primary m-0">
+          Fresh<span class="text-secondary"> Delivery</span>
+        </h1>
+        <div class="d-flex d-lg-none">
+          <div class="d-flex align-items-center mx-2">
+            <a class="btn-sm-square bg-white rounded-circle ms-1" href="">
+              <small class="fa fa-user text-body"></small>
+            </a>
+            <a class="btn-sm-square bg-white rounded-circle ms-2" href="">
+              <small class="fa fa-shopping-bag text-body"></small>
+            </a>
+          </div>
+          <button
+            type="button"
+            class="navbar-toggler me-4"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="/" class="nav-item nav-link active">Home</a>
+            <a href="/products" class="nav-item nav-link">Products</a>
+            <a href="{{url_for('list_boxes')}}" class="nav-item nav-link"
+              >Premade Box</a
+            >
+            <div class="nav-item dropdown">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                >Categories</a
+              >
+              <div class="dropdown-menu m-0">
+                <a href="/products?category=1" class="dropdown-item">Fruits</a>
+                <a href="/products?category=2" class="dropdown-item"
+                  >Vegetables</a
+                >
+                <a href="/products?category=3" class="dropdown-item">Herbs</a>
+                <a href="/products?category=4" class="dropdown-item">Eggs</a>
+                <a href="/products?category=5" class="dropdown-item">Honey</a>
+              </div>
+            </div>
+          </div>
+          <div class="d-lg-flex d-none align-items-center mx-2">
+            {% if session.get('loggedin') %}
+            <a
+              class="btn-sm-square bg-white rounded-circle ms-1"
+              href="/profile"
+            >
+              <small class="fa fa-user text-body"></small>
+            </a>
+            {% else %}
+            <a class="btn-sm-square bg-white rounded-circle ms-1" href="/login">
+              <small class="fa fa-user text-body"></small>
+            </a>
+            {% endif %} {% if session.get('loggedin') %}
+            <a
+              class="btn-sm-square bg-white rounded-circle ms-3 position-relative"
+              href="{{ url_for('cart') }}"
+            >
+              <small class="fa fa-shopping-cart text-body"></small>
+              {% if g.cart_item_count > 0 %}
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                {{ g.cart_item_count }}
+              </span>
+              {% endif %}
+            </a>
+
+            <a
+              class="btn-sm-square bg-white rounded-circle ms-2 position-relative"
+              href="{{ url_for('read_notifications') }}"
+            >
+              <small class="fa fa-bell text-body"></small>
+              {% if g.unread_notification_count > 0 %}
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                {{ g.unread_notification_count }}
+              </span>
+              {% endif %}
+            </a>
+            {% endif %} {% if session.get('loggedin') %}
+            <a
+              class="btn-sm-square bg-white rounded-circle ms-2 position-relative"
+              href="/logout"
+            >
+              <small class="fa fa-sign-out-alt text-body"></small>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </div>
+    <!-- Navbar End -->
+
+    {% if session.get('loggedin') %}
+    <div id="sidebarMenu" class="sidebar">
+      <a
+        href="/"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+      >
+        <span class="fs-4"> Welcome, {{ session.get('name') }}</span>
+      </a>
+      <div class="small">
+        <i class="bi bi-geo-alt-fill"></i>{{ session.get('locationname') }}
+      </div>
+      <hr />
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          {% set back_urls = { 1: 'customer_dashboard', 2: 'staff_dashboard', 3:
+          'localmanager_dashboard', 4: 'nationalmanager_dashboard' } %} {% set
+          current_back_urls = back_urls[session.get('role')] %}
+          <a
+            href="{{ url_for(current_back_urls) }}"
+            class="nav-link text-white {{ 'active-link' if request.endpoint == current_back_urls else '' }}"
+            aria-current="page"
+          >
+            Dashboard
+          </a>
+          <a
+            href="{{ url_for('profile') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/profile' else '' }}"
+            >Your Profile</a
+          >
+          <a
+            href="{{ url_for('list_products') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/products' else '' }}"
+            >All Products</a
+          >
+          {% if session.get('role') == 1 %}
+          <a
+            href="{{ url_for('order') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/order' else '' }}"
+            >Manage Order</a
+          >
+          <a
+            href="{{ url_for('list_inquiry') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/list-inquiry' else '' }}"
+            >Inqueries</a
+          >
+          <a
+            href="{{ url_for('receipt') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/receipt' else '' }}"
+            >View Receipt</a
+          >
+          <a
+            href="{{ url_for('subscriptions') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/subscriptions' else '' }}"
+            >Subscriptions</a
+          >
+          <a
+            href="{{ url_for('apply_account_holder') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/apply_account_holder' else '' }}"
+            >Apply for account holders</a
+          >
+          <a
+            href="{{ url_for('giftcard') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/giftcard' else '' }}"
+            >Buy Gift Cards</a
+          >
+          <a
+            href="{{ url_for('view_gift_cards') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/view_gift_cards' else '' }}"
+            >My Gift Cards</a
+          >
+          <a
+            href="{{ url_for('recipes') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/recipes' else '' }}"
+            >Cooking Recipe</a
+          >
+          {% if g.application_status == 'Approved' %}
+          <a
+            href="{{ url_for('view_credit') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/view_credit' else '' }}"
+            >Credit Limits</a
+          >
+          <a
+            href="{{ url_for('my_invoices') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/my_invoices' else '' }}"
+            >View Invoices</a
+          >
+          {% endif %} {% elif session.get('role') == 2 %}
+          <a
+            href="/manage-products"
+            class="nav-link text-white {{ 'active-link' if request.path == '/manage-products' else '' }}"
+            >Manage products</a
+          >
+          <a
+            href="/manage-orders"
+            class="nav-link text-white {{ 'active-link' if request.path == '/manage-orders' else '' }}"
+            >Manage orders</a
+          >
+          <a
+            href="{{ url_for('view_notifications') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/notifications' else '' }}"
+            >Notification</a
+          >
+          <a
+            href="{{ url_for('list_inquiry') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/list-inquiry' else '' }}"
+            >Inqueries</a
+          >
+
+          {% elif session.get('role') >= 3 %}
+          <a
+            href="{% if session.get('role') == 3 %}{{ url_for('stafflist') }}{% else %}{{ url_for('all_stafflist') }}{% endif %}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('stafflist') or request.path == url_for('all_stafflist') else '' }}"
+            >Manage staff</a
+          >
+          <a
+            href="/manage-products"
+            class="nav-link text-white {{ 'active-link' if request.path == '/manage-products' else '' }}"
+            >Manage products</a
+          >
+          <a
+            href="/manage-orders"
+            class="nav-link text-white {{ 'active-link' if request.path == '/manage-orders' else '' }}"
+            >Manage orders</a
+          >
+          <a
+            href="{{ url_for('manage_boxes') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('manage_boxes') else '' }}"
+            >Manage Pre-made box contents</a
+          >
+          <a
+            href="{{ url_for('view_notifications') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == '/view_notifications' else '' }}"
+            >Notification</a
+          >
+          <a
+            href="{{ url_for('view_applications') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('view_applications') else '' }}"
+            >Account application requests</a
+          >
+          <a
+            href="{{ url_for('view_credit_requests') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('view_credit_requests') else '' }}"
+            >Credit Limit Increase requests</a
+          >
+          <a
+            href="{{ url_for('manage_credit_limits') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('manage_credit_limits') else '' }}"
+            >Manage Credit Limit</a
+          >
+          <a
+            href="{{ url_for('points_transactions') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('points_transactions') else '' }}"
+            >Points Transactions</a
+          >
+          {% if session.get('role') == 4 %}
+
+          <a
+            href="{{ url_for('all_invoices') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('all_invoices') else '' }}"
+            >All Invoices</a
+          >
+          <a
+            href="{{ url_for('management_reports') }}"
+            class="nav-link text-white {{ 'active-link' if request.path == url_for('management_reports') else '' }}"
+            >Management Reports</a
+          >
+          {% endif %} {% endif %}
+        </li>
+      </ul>
+    </div>
+    {% endif %} {% block flash_messages %}
+    <div class="container" style="margin-top: 5rem">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+        style="margin-left: 5rem"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
+    {% endblock %}
+    <div id="mainContent" class="main-content">
+      <!-- Carousel Banner Start -->
+      {% if request.path == '/login/' or request.path == '/register'%} {%else%}
+      {% if request.path == '/' %}
+      <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div
+          id="header-carousel"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              {% if session.get('loggedin') == '1' or session.get('role') is
+              none%}
+              <img
+                class="w-100"
+                src="{{ url_for('static', filename='img/carousel-1.jpg') }}"
+                alt=""
+              />
+
+              {% endif %}
+
+              <div class="carousel-caption">
+                <div class="container">
+                  <div class="row justify-content-start">
+                    <div class="col-lg-7">
+                      {% if current_url == '/' %}
+                      <h1 class="display-2 mb-5 animated">
+                        We Delivery Fresh Food & Health
+                      </h1>
+                      {% else %}
+                      <h1 class="display-5 mb-5 animated">
+                        We Delivery Fresh Food & Health
+                      </h1>
+                      {% endif %}
+
+                      <a
+                        href="/products"
+                        class="btn btn-primary rounded-pill py-sm-3 px-sm-5"
+                        >Products</a
+                      >
+                      <a
+                        href="/boxes"
+                        class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3"
+                        >Premade box</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %} {% endif %}
+      <!-- Carousel Banner End -->
+
+      {% block content %}{% endblock %}
+
+      <!-- Footer Start -->
+      {% if session.get('loggedin') is none %}
+      <div
+        class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn"
+        data-wow-delay="0.1s"
+      >
+        <div class="container py-5">
+          <div class="row g-5">
+            <div class="col-lg-4 col-md-6">
+              <img class="logo" src="/static/img/icon-1.png" alt="" />
+              <h1 class="fw-bold text-primary mb-4">
+                Fresh<span class="text-secondary"> Delivery</span>
+              </h1>
+              <p>
+                Our best organic vegetables and fruits can be deliveried in
+                Auckland, Hamilton, Christchurch and Invercargll.
+              </p>
+              <div class="d-flex pt-2">
+                <a
+                  class="btn btn-square btn-outline-light rounded-circle me-1"
+                  href=""
+                  ><i class="fab fa-twitter"></i
+                ></a>
+                <a
+                  class="btn btn-square btn-outline-light rounded-circle me-1"
+                  href=""
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a
+                  class="btn btn-square btn-outline-light rounded-circle me-1"
+                  href=""
+                  ><i class="fab fa-youtube"></i
+                ></a>
+                <a
+                  class="btn btn-square btn-outline-light rounded-circle me-0"
+                  href=""
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <h4 class="text-light mb-4">Address</h4>
+              <p>
+                <i class="fa fa-map-marker-alt me-3"></i>123 Street,
+                Christchurch, NZ
+              </p>
+              <p><i class="fa fa-phone-alt me-3"></i>+012 345678</p>
+              <p><i class="fa fa-envelope me-3"></i>info@example.com</p>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <h4 class="text-light mb-4">Quick Links</h4>
+              <a class="btn btn-link" href="/">Home</a>
+              <a class="btn btn-link" href="/products">Products</a>
+              <a class="btn btn-link" href="/boxes">Premade Box</a>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid copyright">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                &copy; <a href="#">Fresh Delivery</a>, All Right Reserved.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <!-- Footer End -->
+    </div>
+
+    <!-- Back to Top Start -->
+    <a
+      href="#"
+      class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"
+      ><i class="bi bi-chevron-up"></i
+    ></a>
+    <!-- Back to Top End -->
+    <!-- Product Detail Modal Start -->
+    <div
+      class="modal fade"
+      id="productDetailModal"
+      tabindex="-1"
+      aria-labelledby="productDetailModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productDetailModalLabel">
+              Product Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="productDetailContent">
+              <!-- Dynamic content will be loaded here -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Product Detail Modal End -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Javascript -->
+    <script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/currentCity.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarMenu");
+        sidebar.classList.toggle("sidebar-hidden");
+        var mainContent = document.getElementById("mainContent");
+        if (sidebar.classList.contains("sidebar-hidden")) {
+          mainContent.style.marginLeft = "0"; // Sidebar closed
+        } else {
+          mainContent.style.marginLeft = "280px"; // Sidebar open, adjust this value based on your sidebar's width
+        }
+      }
+      // Close the sidebar if the user is not logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        const loggedin = document.body.getAttribute("data-loggedin") === "True";
+        const mainContent = document.getElementById("mainContent");
+
+        if (!loggedin) {
+          mainContent.style.marginLeft = "0";
+        }
+      });
+    </script>
+  </body>
+</html>

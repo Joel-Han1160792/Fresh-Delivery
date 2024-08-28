@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block title %}Messages{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Inquery messages</h1>
+  {% if inqueryMsgs%}
+  <div class="lead p-3 bg-dark text-white">{{inqueryMsgs[0]['Subject']}}</div>
+  <div class="conversation p-3">
+    <div class="chatContainer" id="myDiv">
+      {% for msg in inqueryMsgs%} {%if session.get('role')==msg['RoleID']%}
+      <div class="text-end">
+        <h5 class="mb-0">
+          <div class="badge rounded-pill bg-primary">
+            <div class="">{{msg['Message']}}</div>
+          </div>
+        </h5>
+        <div class="ms-3 mb-3 small">
+          {%if session.get('role')==1%}
+          <span class="fw-bolder">You:</span> {%else%}
+          <span class="fw-bolder">{{msg['Email']}}:</span>
+          {%endif%}
+          <span class="fw-lighter">{{msg['DateCreated']|format_date}}</span>
+        </div>
+      </div>
+
+      {%else%}
+      <div class="text-start">
+        <h5 class="mb-0">
+          <div class="badge rounded-pill bg-secondary">
+            <div class="">{{msg['Message']}}</div>
+          </div>
+        </h5>
+        <div class="ms-3 mb-3 small">
+          <span class="fw-bolder">{{msg['Email']}}:</span>
+
+          <span class="fw-lighter">{{msg['DateCreated']}}</span>
+        </div>
+      </div>
+
+      {%endif%}
+      <!-- {{msg['ifRead']}} -->
+      <!-- {{msg['RoleID']}} -->
+      {%endfor%}
+    </div>
+    <hr />
+    <form method="POST" action="{{ url_for('add_msg') }}">
+      <input
+        type="hidden"
+        value="{{inqueryMsgs[0]['InquiryID']}}"
+        name="inquiryID"
+      />
+      <input
+        type="hidden"
+        value="{{inqueryMsgs[0]['Subject']}}"
+        name="inquirySubject"
+      />
+
+      <div class="mb-3">
+        <label for="newMsg" class="form-label">New Message</label>
+        <textarea
+          class="form-control"
+          id="newMsg"
+          name="newMsg"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+  </div>
+  {%endif%}
+</div>
+<script>
+  window.onload = function () {
+    var myDiv = document.getElementById("myDiv");
+    myDiv.scrollTop = myDiv.scrollHeight;
+  };
+</script>
+{% endblock %}

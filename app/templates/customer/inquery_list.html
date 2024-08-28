@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block title %}Add Inquiry{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Inquery</h1>
+  {%if session.get('role')==1 %}
+  <a href="/add-inquiry" class="btn btn-primary mb-4">New Inquery</a>
+  {%endif%}
+  {% if inquiries%}
+  <ol class="list-group list-group-numbered">
+    {% for inquiry in inquiries%}
+    <li
+      class="list-group-item d-flex justify-content-between align-items-start"
+    >
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">
+          <a
+            class="link-primary link-offset-2"
+            href="/list-message/{{inquiry['InquiryID']}}"
+          >
+            {{inquiry['Subject']}}</a
+          >
+        </div>
+        {{ inquiry['DateCreated'] | format_date }}
+
+      </div>
+      {%if inquiry['IfOpen']==1%}
+      <span class="badge bg-primary rounded-pill">Open</span>
+      {%else%}
+      <span class="badge bg-dark rounded-pill"> {{inquiry['IfOpen']}}</span>
+      {%endif%}
+    </li>
+
+    {%endfor%}
+  </ol>
+  {% else%}
+  <div class="lead">You have no inquires now</div>
+  {% endif%}
+ 
+</div>
+{% endblock %}

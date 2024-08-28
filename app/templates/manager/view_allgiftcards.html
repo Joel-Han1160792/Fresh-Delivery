@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %}All Gift Card{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2>All Gift Cards</h2>
+  
+  <input class="form-control mb-3" id="searchInput" type="text" placeholder="Search by Card Number or Type" aria-label="Search">
+  
+  <table class="table">
+      <thead>
+          <tr>
+              <th scope="col">#</th>
+              <th scope="col">Card Number</th>
+              <th scope="col">Balance</th>
+              <th scope="col">Card Type</th>
+              <th scope="col">Receiver</th>
+              <th scope="col">Address</th>
+              <th scope="col">Purchased Date</th>
+          </tr>
+      </thead>
+      <tbody id="giftCardTable">
+          {% for gc in allgc %}
+          <tr>
+              <th scope="row">{{ gc[0] }}</th>
+              <td>{{ gc[1] }}</td>
+              <td>NZ ${{ gc[2] }}</td>
+              <td>{{ gc[3] }}</td>
+              <td>{{ gc[4] }}</td>
+              <td>{{ gc[5] }}</td>
+              <td>{{ gc[6] | format_date}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const tableRows = document.querySelectorAll('#giftCardTable tr');
+
+      searchInput.addEventListener('keyup', function() {
+          const query = searchInput.value.toLowerCase();
+          tableRows.forEach(row => {
+              const cardNumber = row.cells[1].textContent.toLowerCase();
+              const cardType = row.cells[3].textContent.toLowerCase();
+              if (cardNumber.includes(query) || cardType.includes(query)) {
+                  row.style.display = '';
+              } else {
+                  row.style.display = 'none';
+              }
+          });
+      });
+  });
+</script>
+{% endblock %}

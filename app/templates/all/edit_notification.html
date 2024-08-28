@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Edit Notification{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <a href="{{ url_for('view_notifications') }}" class="btn btn-light btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    <h1 class="mb-4">Edit Notification</h1>
+    <form method="post" id="notificationForm">
+        <div class="form-group mt-3">
+            <label for="recipient_id">Recipient</label>
+            <select name="recipient_id" id="recipient_id" class="form-select">
+                <option value="">All Customers</option>
+                {% for customer in customers %}
+                <option value="{{ customer.UserID }}" {% if notification.RecipientID == customer.UserID %}selected{% endif %}>{{ customer.Email }}</option>
+                {% endfor %}
+                {% if role == 3 or role == 4 %}
+                <option value="" disabled>-- All Staff --</option>
+                {% for staff_member in staff %}
+                <option value="{{ staff_member.UserID }}" {% if notification.RecipientID == staff_member.UserID %}selected{% endif %}>{{ staff_member.Email }}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group mt-3">
+            <label for="type">Type</label>
+            <select name="type" id="type" class="form-select" required>
+                <option value="">Select Type</option>
+                <option value="Promotion" {% if notification.Type == 'Promotion' %}selected{% endif %}>Promotion</option>
+                <option value="Order Update" {% if notification.Type == 'Order Update' %}selected{% endif %}>Order Update</option>
+                <option value="Delivery Status" {% if notification.Type == 'Delivery Status' %}selected{% endif %}>Delivery Status</option>
+                <option value="General Alert" {% if notification.Type == 'General Alert' %}selected{% endif %}>General Alert</option>
+            </select>
+        </div>
+        <div class="form-group mt-3">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" class="form-control" value="{{ notification.Title }}" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" class="form-control" required>{{ notification.Message }}</textarea>
+        </div>
+        <div class="form-group mt-3">
+            <label for="link">Link (optional)</label>
+            <input type="text" name="link" id="link" class="form-control" value="{{ notification.Link }}">
+        </div>
+        <div class="form-group mt-3" id="expirationDateGroup" {% if notification.Type != 'Promotion' %}style="display: none;"{% endif %}>
+            <label for="expiration_date">Expiration Date</label>
+            <input type="datetime-local" name="expiration_date" id="expiration_date" class="form-control" value="{{ notification.ExpirationDate }}">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Update Notification</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('type').addEventListener('change', function () {
+    var expirationDateGroup = document.getElementById('expirationDateGroup');
+    if (this.value === 'Promotion') {
+        expirationDateGroup.style.display = 'block';
+        document.getElementById('expiration_date').required = true;
+    } else {
+        expirationDateGroup.style.display = 'none';
+        document.getElementById('expiration_date').required = false;
+    }
+});
+
+document.getElementById('notificationForm').addEventListener('submit', function (event) {
+    var requiredFields = ['type', 'title', 'message'];
+    for (var i = 0; i < requiredFields.length; i++) {
+        var field = document.getElementById(requiredFields[i]);
+        if (!field.value) {
+            alert('Please fill out the ' + field.previousElementSibling.innerText + ' field.');
+            field.focus();
+            event.preventDefault();
+            return false;
+        }
+    }
+    if (document.getElementById('type').value === 'Promotion' && !document.getElementById('expiration_date').value) {
+        alert('Please fill out the Expiration Date field for Promotion type.');
+        document.getElementById('expiration_date').focus();
+        event.preventDefault();
+        return false;
+    }
+});
+</script>
+{% endblock %}

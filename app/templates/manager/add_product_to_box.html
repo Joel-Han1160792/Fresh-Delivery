@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Add Product to Box{% endblock %} {%
+block content %}
+<div class="container">
+  <h1>Add Product to Box</h1>
+  <form
+    action="{{ url_for('add_product_to_box', box_id=box_id) }}"
+    method="post"
+  >
+    <div class="form-group">
+      <label for="product_id">Product</label>
+      <select name="product_id" id="product_id" class="form-select">
+        {% for product in products %}
+        <option value="{{ product.ProductID }}">
+          {{ product.Name }} ({{ product.UnitName }})
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input
+        type="number"
+        name="quantity"
+        id="quantity"
+        class="form-control"
+        min="1"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Add to Box</button>
+  </form>
+</div>
+{% endblock %}

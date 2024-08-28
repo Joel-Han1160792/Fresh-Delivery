@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %}Inquery messages{% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Inquery messages</h1>
+
+  <div class="accordion accordion-flush" id="accordionFlushExample">
+    {% for msg in inqueryMsgs%} {{msg['Message']}} {{msg['Datecreated']}}
+    {{msg['ifRead']}} {{msg['RoleID']}} {{msg['Email']}} {%endfor%}
+  </div>
+  <form>
+    <div class="mb-3">
+      <label for="newMsg" class="form-label">New Message</label>
+      <textarea
+        class="form-control"
+        id="newMsg"
+        name="newMsg"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</div>
+{% endblock %}

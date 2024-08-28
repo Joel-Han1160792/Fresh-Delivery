@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block title %}Box Details{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="box-item shadow-sm rounded bg-white p-4">
+        <div class="position-relative overflow-hidden">
+          <img
+            class="img-fluid w-100 rounded"
+            src="{{ url_for('static', filename='img/' ~ box['ImageURL']) }}"
+            alt="{{ box['Name'] }}"
+          />
+        </div>
+        <h3 class="mt-3">{{ box['Name'] }}</h3>
+        <p><strong>Price:</strong> {{ box['Price'] | format_nz_currency }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="shadow-sm rounded bg-white p-4">
+        <h4>Box Contents</h4>
+        <ul class="list-group mb-3">
+          {% for content in box_contents %}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <span
+              >{{ content.Name }} ({{ content.UnitName }}) x {{ content.Quantity
+              }}</span
+            >
+          </li>
+          {% endfor %}
+        </ul>
+        <h4>Subscribe to this Box</h4>
+        <form action="{{ url_for('add_sub') }}" method="post">
+          <input type="hidden" name="BoxID" value="{{ box['BoxID'] }}" />
+          <input type="hidden" name="price" value="{{ box['Price'] }}" />
+          <input type="hidden" name="type" value="subscription" />
+          <div class="form-group mb-3">
+            <label for="frequency">Frequency</label>
+            <select name="frequency" id="frequency" class="form-select">
+              <option value="One-time">One-time</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Fortnightly">Fortnightly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label for="quantity">Quantity</label>
+            <input
+              id="quantity"
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              class="form-control"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

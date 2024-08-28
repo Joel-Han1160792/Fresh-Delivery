@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<div class="container-fluid pt-5">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="container mt-5">
+        <h2 class="mb-4">Welcome to Local Manager's Dashboard</h2>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow h-100">
+              <img
+                src="{{ url_for('static', filename='Images/fresh1.jpg') }}"
+                class="card-img-top"
+                alt="Workshops Image"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Manage Staff</h5>
+                <a
+                  href="{{ url_for('stafflist') }}"
+                  class="btn btn-outline-primary"
+                  >Manage Staff</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow h-100">
+              <img
+                src="{{ url_for('static', filename='Images/news.png') }}"
+                class="card-img-top"
+                alt="Workshops Image"
+              />
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fas fa-envelope"></i> Manage News
+                </h5>
+                <p class="card-text"></p>
+                <a
+                  href="{{ url_for('news', newstype = 'Promotion') }}"
+                  class="btn btn-outline-primary"
+                  >Special Offers</a
+                >
+                <a
+                  href="{{ url_for('news', newstype = 'General') }}"
+                  class="btn btn-outline-secondary"
+                  >General News</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

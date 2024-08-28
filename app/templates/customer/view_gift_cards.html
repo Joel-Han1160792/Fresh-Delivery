@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}My Gift Cards{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <h2>My Gift Cards</h2>
+  {% if gift_cards %}
+  <div class="row">
+    {% for card in gift_cards %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          class="card-img-top"
+          src="{{ url_for('static', filename='Images/' ~ card.Image) }}"
+          alt="{{ card.GiftCardName }}"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ card.GiftCardName }}</h5>
+          <p class="card-text">Card Number: {{ card.CardNumber }}</p>
+          <p class="card-text">
+            Balance: {{ card.Balance | format_nz_currency }}
+          </p>
+        
+          <p class="card-text">Date Purchased: {{ card.DatePurchased |format_date }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No gift cards found.</p>
+  {% endif %}
+</div>
+{% endblock %}

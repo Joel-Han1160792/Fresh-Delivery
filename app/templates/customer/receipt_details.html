@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block title %}Receipt Details{% endblock %} {%
+    block content %}
+<body class="receipt-page">
+<div class="receipt-container pt-5" >
+    <div class="header">
+        <h1>Fresh Delivery Inc.</h1>
+        <p>123 Street<br>Christchurch, NZ</p>
+    </div>
+    <hr>
+    <h2>RECEIPT</h2>
+    <p><strong>Bill To:</strong> {{customer['FirstName']}} {{customer['LastName']}}<br>{{customer['Address']}}</p>
+    <p><strong>Ship To:</strong>{{customer['FirstName']}} {{customer['LastName']}}<br>{{customer['Address']}}</p>
+    <table>
+        <tr>
+            <th>QTY</th>
+            <th>DESCRIPTION</th>
+            <th>UNIT PRICE</th>
+            <th>AMOUNT</th>
+        </tr>
+   
+        {% if orders %}
+        {% for order in orders %}
+        <tr>
+            <td>{{order['Quantity']}}</td>
+            <td>{{order['Name']}}</td>
+            <td>${{order['UnitPrice']}}</td>
+            <td>${{order['Quantity'] * order['UnitPrice']}}  </td>
+           
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+        {% if box_orders %}
+        {% for order in box_orders %}
+        <tr>
+            <td>{{order['Quantity']}}</td>
+            <td>{{order['Size']}} {{order['Name']}}</td>
+            <td>${{order['Price']}}</td>
+            <td>${{order['Quantity'] * order['Price']}}  </td>
+           
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+        <tr>
+            <td colspan="3" class="total">Subtotal + Shipping (without GST)</td>
+            <td>${{ invoice['TotalAmount'] - invoice['GSTAmount']}}</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="total">GST 15%</td>
+            <td>${{ invoice['GSTAmount']}}</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="total"><strong>TOTAL</strong></td>
+            <td>${{ invoice['TotalAmount'] }}</td>
+        </tr>
+    </table>
+    <div class="footer">
+        <p>Receipt #NZ-{{invoiceid}} | Receipt Date: {{created_date|format_date}}</p>
+        
+        
+    </div>
+  </div>
+</body>
+{% endblock %}

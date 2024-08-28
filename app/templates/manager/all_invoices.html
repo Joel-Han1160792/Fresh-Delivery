@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block title %}All Invoices{% endblock %} {% block
+  content %}
+  <div class="container mt-5">
+    <h2>All Invoices</h2>
+  
+    <form
+      action="{{ url_for('all_invoices') }}"
+      method="post"
+      class="row g-3 mb-4"
+    >
+      <div class="col-md-4">
+        <input
+          type="text"
+          name="email_search"
+          class="form-control"
+          placeholder="Search by email"
+          value="{{ email_search or '' }}"
+        />
+      </div>
+      <div class="col-md-4">
+        <select name="status_search" class="form-control">
+          <option value="">All Statuses</option>
+          <option value="Paid" {% if status_search == 'Paid' %}selected{% endif %}>Paid</option>
+          <option value="Pending" {% if status_search == 'Pending' %}selected{% endif %}>Pending</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{{ url_for('all_invoices') }}" class="btn btn-secondary">Reset</a>
+      </div>
+    </form>
+  
+    <form
+      action="{{ url_for('generate_invoices_route') }}"
+      method="post"
+      style="margin-top: 10px"
+    >
+      <button type="submit" class="btn btn-outline-success">
+        Generate Invoices
+      </button>
+    </form>
+  
+    {% if invoices %}
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Customer Email</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Total Amount</th>
+          <th>GST Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for invoice in invoices %}
+        <tr>
+          <td>{{ invoice.InvoiceID }}</td>
+          <td>{{ invoice.Email }}</td>
+          <td>{{ invoice.InvoiceDate | format_date or 'N/A' }}</td>
+          <td>{{ invoice.DueDate | format_date or 'N/A' }}</td>
+          <td>{{ invoice.TotalAmount | default(0) | format_nz_currency }}</td>
+          <td>{{ invoice.GSTAmount | default(0) | format_nz_currency }}</td>
+          <td>{{ invoice.Status or 'N/A' }}</td>
+          <td>
+            <a
+              href="{{ url_for('invoice_details_manager', invoice_id=invoice.InvoiceID) }}"
+              class="btn btn-primary"
+              >View Details</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No invoices found.</p>
+    {% endif %}
+  </div>
+  {% endblock %}
+  

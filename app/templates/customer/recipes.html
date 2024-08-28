@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Cooking Tutorials{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Cooking Tutorials</h1>
+  
+  <form method="get" class="form-inline mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-10">
+        <input type="text" name="search" class="form-control w-100" placeholder="Search by product name" value="{{ search_query }}">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    {% if recipes %}
+      {% for recipe in recipes %}
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <!-- <img class="card-img-top" src="{{ recipe['ImageURL'] }}" alt="{{ recipe['RecipeName'] }}"> -->
+            <div class="card-body">
+              <h5 class="card-title">{{ recipe['RecipeName'] }}</h5>
+              <p class="card-text">{{ recipe['ProductName'] }}</p>
+              <a href="{{ url_for('recipe_detail', recipe_id=recipe['RecipeID']) }}" class="btn btn-primary">View Recipe</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <div class="alert alert-warning" role="alert">No recipes found.</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

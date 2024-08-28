@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %}Notification Details{% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">{{ notification.Title }}</h1>
+  <div class="card">
+    <div class="card-header">
+      <strong>{{ notification.Type }}</strong> - {{ notification.DateCreated |
+      format_date }}
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ notification.Message }}</p>
+      {% if notification.ExpirationDate %}
+      <p class="card-text">
+        Expired at: {{ notification.ExpirationDate | format_date}}
+      </p>
+      {% endif %} {% if notification.Link %}
+      <a href="{{ notification.Link }}" class="btn btn-primary">More Details</a>
+      {% endif %}
+    </div>
+  </div>
+  <a href="{{ url_for('read_notifications') }}" class="btn btn-secondary mt-3"
+    >Back to Notifications</a
+  >
+</div>
+{% endblock %}

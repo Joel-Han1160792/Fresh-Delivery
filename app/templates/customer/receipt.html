@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block title %}Receipt History{% endblock %} {%
+block content %}
+<div class="container p-20">
+  <h1 class="mb-4">Receipt List</h1>
+  <br>
+
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr> Your Receipt of Box Orders</tr>
+      <tr>
+        <th class="localstaff">Box OderID:</th>
+        <th class="localstaff">Date Ordered:</th>
+        <th class="localstaff">Order Type:</th>
+        <th class="localstaff">Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subscriptions %}
+      <tr>
+        <td class="localstaff">
+          <a href="{{ url_for('receipt_details', receiptID = sub[4]) }}"
+            >{{sub[0]}}
+          </a>
+        </td>
+        <td class="localstaff">{{ sub[1] | format_date }}</td>
+        <td class="localstaff">{{ sub[2]}}</td>
+        <td class="localstaff">{{ sub[3]| format_nz_currency}}</td>
+      </tr>
+      
+    </tbody>
+    {% endfor %}
+  </table>
+
+  <table class="table table-striped">
+    <thead>
+      <tr> Your Receipt of Product Orders</tr>
+      <tr>
+        <th class="localstaff">Product OderID:</th>
+        <th class="localstaff">Date Ordered:</th>
+        <th class="localstaff">Order Type:</th>
+        <th class="localstaff">Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for receipt in receipts %}
+      <tr>
+        <td class="localstaff">
+          <a href="{{ url_for('receipt_details', receiptID = receipt[3]) }}"
+            >{{receipt[0]}}
+          </a>
+        </td>
+        <td class="localstaff">{{ receipt[1]| format_date }}</td>
+        <td class="localstaff">Order</td>
+        <td class="localstaff">{{ receipt[2]|format_nz_currency}}</td>
+      </tr>
+      
+    </tbody>
+    {% endfor %}
+  </table>
+
+
+  {% endblock %}
+</div>

@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block title %}Points Transactions{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2>Points Transactions</h2>
+
+  <form method="get" class="mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <input
+          type="text"
+          name="email"
+          class="form-control"
+          placeholder="Search by email"
+          value="{{ request.args.get('email', '') }}"
+        />
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{{ url_for('points_transactions') }}" class="btn btn-secondary"
+          >Clear</a
+        >
+      </div>
+    </div>
+  </form>
+
+  {% if transactions %}
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>User Email</th>
+        <th>Order ID</th>
+        <th>Points Earned</th>
+        <th>Points Deducted</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in transactions %}
+      <tr>
+        <td>{{ transaction.TransactionID }}</td>
+        <td>{{ transaction.Email }}</td>
+        <td>{{ transaction.OrderID or 'N/A' }}</td>
+        <td>{{ transaction.PointsEarned or 0 }}</td>
+        <td>{{ transaction.PointsDeducted or 0 }}</td>
+        <td>{{ transaction.TransactionDate | format_date}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No transactions found.</p>
+  {% endif %}
+</div>
+{% endblock %}

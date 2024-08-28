@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %}Manage Boxes{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h2>Edit Boxes Information</h2>
+  <form id="addBoxForm" action="{{ url_for('editboxinfo', id = box[0]) }}" method="post">
+    <div class="mb-3">
+      <label for="boxName" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="boxName"
+        name="name"
+        value="{{box[1]}}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="boxType" class="form-label">Type</label>
+      <select class="form-select" id="boxType" name="type" required>
+        <option value="Vegetable" {% if box[2] == 'Vegetable' %} selected {% endif %}>Vegetable</option>
+        <option value="Fruit" {% if box[2] == 'Fruit' %} selected {% endif %}>Fruit</option>
+        <option value="Mixed" {% if box[2] == 'Mixed' %} selected {% endif %}>Mixed</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="boxSize" class="form-label">Size</label>
+      <select class="form-select" id="boxSize" name="size" required>
+        <option value="Large" {% if box[3] == 'Large' %} selected {% endif %} >Large</option>
+        <option value="Medium" {% if box[3] == 'Medium' %} selected {% endif %} >Medium</option>
+        <option value="Small" {% if box[3] == 'Small' %} selected {% endif %}>Small</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="boxPrice" class="form-label">Price</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="boxPrice"
+        name="price"
+        value="{{box[4]}}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="contentsDescription" class="form-label"
+        >Contents Description</label
+      >
+      <textarea
+        class="form-control"
+        id="contentsDescription"
+        name="contentsDescription"
+      >{{box[5]}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+{% endblock %}

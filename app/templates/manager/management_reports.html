@@ -1,0 +1,214 @@
+{% extends 'base.html' %} {% block title %}Management Reports{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Management Reports</h2>
+
+  <form method="post" class="mb-4">
+    <div class="row g-3 justify-content-center">
+      <div class="col-md-4">
+        <input type="date" name="start_date" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <input type="date" name="end_date" class="form-control" required />
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">
+          Generate Report
+        </button>
+      </div>
+    </div>
+  </form>
+
+  {% if sales_trends %}
+  <div class="report-section">
+    <h3 class="text-center">Sales Trends</h3>
+    <canvas id="salesTrendsChart"></canvas>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    No recent sales activities within the given date range.
+  </div>
+  {% endif %} {% if popular_products %}
+  <div class="report-section mt-5">
+    <h3 class="text-center">Popular Products</h3>
+    <canvas id="popularProductsChart"></canvas>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    No popular products within the given date range.
+  </div>
+  {% endif %} {% if location_orders %}
+  <div class="report-section mt-5">
+    <h3 class="text-center">Orders by Location</h3>
+    <canvas id="locationOrdersChart"></canvas>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    No location orders within the given date range.
+  </div>
+  {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      {% if sales_trends %}
+      var salesTrendsData = {{ sales_trends | tojson | safe }};
+      console.log(salesTrendsData); // Debug output
+
+      var salesTrendsLabels = salesTrendsData.map(item => new Date(item.OrderDate));
+      var salesTrendsValues = salesTrendsData.map(item => parseFloat(item.TotalSales));
+
+      var ctx = document.getElementById('salesTrendsChart').getContext('2d');
+      var salesTrendsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: salesTrendsLabels,
+      datasets: [{
+        label: 'Total Sales',
+        data: salesTrendsValues,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'day'
+          },
+          adapters: {
+            date: {
+              adapter: 'chartjs-adapter-date-fns'
+            }
+          },
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Total Sales'
+          },
+          ticks: {
+            callback: function(value, index, values) {
+              return value.toFixed(2) + 'NZD';
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(tooltipItem) {
+              return tooltipItem.raw.toFixed(2) + "NZD";
+            }
+          }
+        }
+      }
+    }
+  });
+      {% endif %}
+
+      {% if popular_products %}
+      var popularProductsData = {{ popular_products | tojson | safe }};
+      console.log(popularProductsData); // Debug output
+
+      var popularProductsLabels = popularProductsData.map(item => item.Name);
+      var popularProductsValues = popularProductsData.map(item => parseInt(item.TotalSold));
+
+      var ctx = document.getElementById('popularProductsChart').getContext('2d');
+      var popularProductsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: popularProductsLabels,
+          datasets: [{
+            label: 'Total Sold',
+            data: popularProductsValues,
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Product Name'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Total Sold'
+              }
+            }
+          }
+        }
+      });
+      {% endif %}
+
+      {% if location_orders %}
+      var locationOrdersData = {{ location_orders | tojson | safe }};
+      console.log(locationOrdersData); // Debug output
+
+      var locationOrdersLabels = locationOrdersData.map(item => item.LocationName);
+      var locationOrdersValues = locationOrdersData.map(item => parseInt(item.OrderCount));
+
+      var ctx = document.getElementById('locationOrdersChart').getContext('2d');
+      var locationOrdersChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: locationOrdersLabels,
+          datasets: [{
+            label: 'Order Count',
+            data: locationOrdersValues,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Location'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Order Count'
+              }
+            }
+          }
+        }
+      });
+      {% endif %}
+    });
+</script>
+
+<style>
+  .report-section {
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  .alert-info {
+    background-color: #e9f7fe;
+    color: #31708f;
+  }
+</style>
+{% endblock %}

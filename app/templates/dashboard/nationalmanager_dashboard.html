@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<!-- Main Content -->
+<div class="container-fluid pt-5">
+  <div class="row">
+  <!-- Add the two card bodies here -->
+  <div class="col-md-9">
+    <div class="container mt-5">
+      <h2 class="mb-4">Welcome to National Manager's Dashboard</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow h-100">
+            <img
+              src="{{ url_for('static', filename='Images/fresh2.jpg') }}"
+              class="card-img-top"
+              alt="Workshops Image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-book"></i> Manage System Settings
+              </h5>
+              <p class="card-text"></p>
+              <a href="{{url_for('view_categories')}}" class="btn btn-outline-primary"
+                >Manage list of category names</a
+              >
+              <a href="{{url_for('view_units')}}" class="btn btn-outline-secondary"
+                >Manage units of purchase</a
+              >
+              <a href="{{url_for('view_locations')}}" class="btn btn-outline-primary"
+              >Manage locations</a
+            >
+            <a href="/giftcard" class="btn btn-outline-secondary"
+            >Manage gift cards</a
+          >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow h-100">
+            <img
+              src="{{ url_for('static', filename='Images/news.png') }}"
+              class="card-img-top"
+              alt="Workshops Image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-envelope"></i> Manage News
+              </h5>
+              <p class="card-text"></p>
+              <a
+                href="{{ url_for('news', newstype = 'Promotion') }}"
+                class="btn btn-outline-primary"
+                >Special Offers</a
+              >
+              <a
+                href="{{ url_for('news', newstype = 'General') }}"
+                class="btn btn-outline-secondary"
+                >General News</a
+              >
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

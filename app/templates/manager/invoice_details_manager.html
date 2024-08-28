@@ -1,0 +1,128 @@
+{% extends 'base.html' %} {% block title %}Invoice Details{% endblock %} {%
+block content %}
+<a href="{{ url_for('all_invoices') }}" class="btn btn-light btn-sm">
+  <i class="fas fa-arrow-left"></i> Back
+</a>
+<div class="container mt-5">
+  <div class="invoice-header text-center mb-4">
+    <h1 class="display-4">Invoice</h1>
+    <p class="lead">Invoice ID: {{ invoice[0].InvoiceID }}</p>
+  </div>
+
+  <div class="invoice-info mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Customer Information</h4>
+        <p><strong>Email:</strong> {{ invoice[0].Email }}</p>
+      </div>
+      <div class="col-md-6 text-end">
+        <h4>Invoice Information</h4>
+        <p>
+          <strong>Invoice Date:</strong> {{ invoice[0].InvoiceDate or 'N/A' }}
+        </p>
+        <p><strong>Due Date:</strong> {{ invoice[0].DueDate or 'N/A' }}</p>
+        <p>
+          <strong>Status:</strong>
+          <span
+            class="badge {{ 'bg-success' if invoice[0].Status == 'Paid' else 'bg-warning' }}"
+            >{{ invoice[0].Status or 'N/A' }}</span
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="mb-4">Invoice Items</h3>
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set subtotal = 0 %} {% for item in invoice %}
+      <tr>
+        <td>{{ item.Description or 'N/A' }}</td>
+        <td>{{ item.Quantity if item.Quantity is not none else 'N/A' }}</td>
+        <td>{{ item.UnitPrice | format_nz_currency }}</td>
+        <td>
+          {{ item.TotalPrice | format_nz_currency }} {% set subtotal = subtotal
+          + (item.TotalPrice if item.TotalPrice is not none else 0) %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="invoice-summary mb-4">
+    <div class="row">
+      <div class="col-md-12 text-end">
+        <p>
+          <strong>Subtotal:</strong> {{ (invoice[0].TotalAmount | float -
+          invoice[0].ShippingPrice | float - invoice[0].GSTAmount | float) |
+          format_nz_currency }}
+        </p>
+      </div>
+      <div class="col-md-12 text-end">
+        <p>
+          <strong>Shipping Price:</strong> {{ invoice[0].ShippingPrice |
+          format_nz_currency }}
+        </p>
+      </div>
+      <div class="col-md-12 text-end">
+        <p>
+          <strong>GST Amount:</strong> {{ invoice[0].GSTAmount |
+          format_nz_currency }}
+        </p>
+      </div>
+      <div class="col-md-12 text-end">
+        <p>
+          <strong>Total Amount:</strong> {{ invoice[0].TotalAmount |
+          format_nz_currency }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {% if not invoice %}
+  <p class="text-center mt-4">Invoice details not found.</p>
+  {% endif %}
+</div>
+
+<style>
+  .invoice-header {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 20px;
+  }
+
+  .invoice-info {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 20px;
+  }
+
+  .invoice-summary {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 20px;
+  }
+
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+  }
+
+  .table-light th {
+    background-color: #f8f9fa;
+  }
+
+  .badge.bg-success {
+    background-color: #28a745;
+  }
+
+  .badge.bg-warning {
+    background-color: #ffc107;
+  }
+</style>
+{% endblock %}

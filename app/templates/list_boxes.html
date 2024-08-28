@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block title %}Pre-made Boxes{% endblock %} {% block
+content %}
+<div class="container p-20">
+  <h1 class="mb-4">Pre-made Boxes</h1>
+  <form id="searchForm" method="get" class="form-inline mb-5">
+    <div class="row align-items-center">
+      <div class="col-lg-3 col-md-6 mr-2" style="width: auto">
+        <select name="type" class="form-select mb-2 mr-sm-2">
+          <option value="">All Types</option>
+          {% for type in types %}
+          <option value="{{ type['Type'] }}">{{ type['Type'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-3 col-md-6 ml-2">
+        <select name="size" class="form-select mb-2 mr-sm-2">
+          <option value="">All Sizes</option>
+          {% for size in sizes %}
+          <option value="{{ size['Size'] }}">{{ size['Size'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-auto">
+        <button type="submit" class="btn btn-primary rounded-pill mb-2 mb-lg-0">
+          Search
+        </button>
+      </div>
+      <div class="col-lg-auto">
+        <button
+          type="reset"
+          class="btn btn-secondary rounded-pill mb-2 mb-lg-0 ml-lg-2"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="row g-4">
+    {% if boxes %} {% for box in boxes %}
+    <div class="col-xl-3 col-lg-4 col-md-6 fadeInUp" data-wow-delay="0.1s">
+      <div class="box-item">
+        <div class="position-relative bg-light overflow-hidden">
+          <a class="d-block h5 mb-2" href="/box_details/{{ box['BoxID']}}">
+            <img
+              class="img-fluid w-100"
+              src="/static/img/{{ box['ImageURL']}}"
+              alt="{{ box['Name'] }}"
+          /></a>
+          <div
+            class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3"
+          >
+            {{ box['Size'] }} - {{ box['Type'] }}
+          </div>
+        </div>
+        <div class="text-center p-4">
+          <a class="d-block h5 mb-2" href="/box_details/{{ box['BoxID']}}"
+            >{{ box['Name'] }}</a
+          >
+          <span class="text-primary me-1"
+            >{{ box['Price'] | format_nz_currency }}</span
+          >
+          <p>{{ box['Contents'] }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="col-12">
+      <div class="alert alert-warning" role="alert">No boxes found.</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+/>
+<script>
+  new WOW().init();
+</script>
+<script>
+  document.getElementById("searchForm").onreset = function () {
+    window.location.href = "/boxes"; // Redirects back to the boxes page without filters
+  };
+
+  function loadBoxDetails(boxId) {
+    // Use Fetch API to get box details
+    fetch(`/box_details/${boxId}`)
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("boxDetailContent").innerHTML = data;
+      })
+      .catch((error) => console.error("Error loading box details:", error));
+  }
+</script>
+{% endblock %}

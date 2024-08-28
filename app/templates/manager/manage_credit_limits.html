@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block title %}Manage Credit Limits{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2>Manage Credit Limits</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Business Name</th>
+        <th>Credit Limit</th>
+        <th>Remaining Credit</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for account_holder in account_holders %}
+      <tr>
+        <td>{{ account_holder.FirstName }}</td>
+        <td>{{ account_holder.LastName }}</td>
+        <td>{{ account_holder.Email }}</td>
+        <td>{{ account_holder.BusinessName }}</td>
+        <td>{{ account_holder.CreditLimit | format_nz_currency }}</td>
+        <td>{{ account_holder.RemainingCredit | format_nz_currency }}</td>
+        <td>
+          <a
+            href="{{ url_for('edit_credit_limit', user_id=account_holder.UserID) }}"
+            class="btn btn-primary btn-sm"
+            >Edit</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block title %}Product List{% endblock %} {% block
+content %}
+<div class="container p-20">
+  <h1 class="mb-4">{% if newstype == 'Promotion'%} Special Offers {% else %} General News {% endif %}</h1>
+ 
+  <a href="{{url_for('addnews',newstype = newstype)}}" class="btn btn-primary mb-3">Add News</a>
+
+  {% for news in newslist %}
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5
+        id="news-title-{{ news[0] }}"
+        class="card-title p-3 mb-2  d-flex justify-content-between align-items-center
+        {% if news[5] <= today %} bg-dark text-white {% else %} bg-success text-white {% endif %}"
+      >
+        {{news[2]}}
+       <div>
+       
+          <a
+            href="{{url_for('editnews',id=news[0])}}"
+            class="btn btn-md btn-primary mr-2"
+            >Edit</a
+          >
+          <a
+            href="{{url_for('deletenews', newstype = newstype, id=news[0])}}"
+            class="btn btn-md btn-danger"
+            >Delete</a>
+
+        </div>
+      </h5>
+      <p class="card-text mb-3">{{news[3] }}</p>
+      <p>  <small class="text-body-message text-danger">Expired on {{news[5] |format_date}} </small></p>      
+        
+
+      <p class="card-text">
+        <small class="text-body-secondary"
+          >Last updated at {{news[4] |format_date }} </small
+        >
+      </p>
+
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="container mt-4">
+    <div class="container-fluid d-flex justify-content-center">
+        <form class="info-update shadow p-4 rounded" action="{{ url_for('update_info', userID=userID) }}" method="post" enctype="multipart/form-data" style="background-color: #f8f9fa; width: 80%; max-width: 1000px;">
+            <h2 class="mb-4 text-center">Update Information</h2>
+            
+            <!-- Customer Info -->
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" pattern="[a-zA-Z]+" value="{{ profile[1] }}" required />
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" pattern="[a-zA-Z]+" value="{{ profile[2] }}" required />
+            </div>
+
+            {% if role == 1 %}
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" pattern="\d{9,11}" value="{{ profile[7] }}" required />
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <select name="location" class="form-select" required>
+                    <option value="Christchurch" {{ 'selected' if profile[3] == 'Christchurch' else '' }}>Christchurch</option>
+                    <option value="Invercargill" {{ 'selected' if profile[3] == 'Invercargill' else '' }}>Invercargill</option>
+                    <option value="Wellington" {{ 'selected' if profile[3] == 'Wellington' else '' }}>Wellington</option>
+                    <option value="Hamilton" {{ 'selected' if profile[3] == 'Hamilton' else '' }}>Hamilton</option>
+                    <option value="Auckland" {{ 'selected' if profile[3] == 'Auckland' else '' }}>Auckland</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Current Address</label>
+                <textarea id="address" name="address" rows="3" class="form-control" placeholder="Enter your address">{{ profile[5] }}</textarea>
+            </div>
+            {% elif role in [2, 3, 4] %}
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" pattern="\d{9,11}" value="{{ profile[4] }}" required />
+            </div>
+            {% if role == 3 %}
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <select name="location" class="form-select" disabled>
+                    <option value="Christchurch" {{ 'selected' if profile[5] == 'Christchurch' else '' }}>Christchurch</option>
+                    <option value="Invercargill" {{ 'selected' if profile[5] == 'Invercargill' else '' }}>Invercargill</option>
+                    <option value="Wellington" {{ 'selected' if profile[5] == 'Wellington' else '' }}>Wellington</option>
+                    <option value="Hamilton" {{ 'selected' if profile[5] == 'Hamilton' else '' }}>Hamilton</option>
+                    <option value="Auckland" {{ 'selected' if profile[5] == 'Auckland' else '' }}>Auckland</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="position" class="form-label">Position</label>
+                <select name="position" class="form-select" disabled>
+                    <option value="Sales" {{ 'selected' if profile[7] == 'Sales' else '' }}>Sales</option>
+                    <option value="Local Manager" {{ 'selected' if profile[7] == 'Local Manager' else '' }}>Local Manager</option>
+                    <option value="National Manager" {{ 'selected' if profile[7] == 'National Manager' else '' }}>National Manager</option>
+                    <option value="IT" {{ 'selected' if profile[7] == 'IT' else '' }}>IT</option>
+                    <option value="HR" {{ 'selected' if profile[7] == 'HR' else '' }}>HR</option>
+                    <option value="Operations" {{ 'selected' if profile[7] == 'Operations' else '' }}>Operations</option>
+                    <option value="Marketing" {{ 'selected' if profile[7] == 'Marketing' else '' }}>Marketing</option>
+                    <option value="Finance" {{ 'selected' if profile[7] == 'Finance' else '' }}>Finance</option>
+                    <option value="R&D" {{ 'selected' if profile[7] == 'R&D' else '' }}>R&D</option>
+                    <option value="Legal" {{ 'selected' if profile[7] == 'Legal' else '' }}>Legal</option>
+                    <option value="Customer Services" {{ 'selected' if profile[7] == 'Customer Services' else '' }}>Customer Services</option>
+                    <option value="Logistics" {{ 'selected' if profile[7] == 'Logistics' else '' }}>Logistics</option>
+                </select>
+            </div>
+            {% elif role == 4 %}
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <select name="location" class="form-select">
+                    <option value="Christchurch" {{ 'selected' if profile[5] == 'Christchurch' else '' }}>Christchurch</option>
+                    <option value="Invercargill" {{ 'selected' if profile[5] == 'Invercargill' else '' }}>Invercargill</option>
+                    <option value="Wellington" {{ 'selected' if profile[5] == 'Wellington' else '' }}>Wellington</option>
+                    <option value="Hamilton" {{ 'selected' if profile[5] == 'Hamilton' else '' }}>Hamilton</option>
+                    <option value="Auckland" {{ 'selected' if profile[5] == 'Auckland' else '' }}>Auckland</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="position" class="form-label">Position</label>
+                <select name="position" class="form-select">
+                    <option value="Sales" {{ 'selected' if profile[7] == 'Sales' else '' }}>Sales</option>
+                    <option value="Local Manager" {{ 'selected' if profile[7] == 'Local Manager' else '' }}>Local Manager</option>
+                    <option value="National Manager" {{ 'selected' if profile[7] == 'National Manager' else '' }}>National Manager</option>
+                    <option value="IT" {{ 'selected' if profile[7] == 'IT' else '' }}>IT</option>
+                    <option value="HR" {{ 'selected' if profile[7] == 'HR' else '' }}>HR</option>
+                    <option value="Operations" {{ 'selected' if profile[7] == 'Operations' else '' }}>Operations</option>
+                    <option value="Marketing" {{ 'selected' if profile[7] == 'Marketing' else '' }}>Marketing</option>
+                    <option value="Finance" {{ 'selected' if profile[7] == 'Finance' else '' }}>Finance</option>
+                    <option value="R&D" {{ 'selected' if profile[7] == 'R&D' else '' }}>R&D</option>
+                    <option value="Legal" {{ 'selected' if profile[7] == 'Legal' else '' }}>Legal</option>
+                    <option value="Customer Services" {{ 'selected' if profile[7] == 'Customer Services' else '' }}>Customer Services</option>
+                    <option value="Logistics" {{ 'selected' if profile[7] == 'Logistics' else '' }}>Logistics</option>
+                </select>
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mb-3">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

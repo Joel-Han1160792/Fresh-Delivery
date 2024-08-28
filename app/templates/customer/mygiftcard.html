@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %}My Gift Card{% endblock %} {%
+block content %}
+<div class="container p-20">
+  <h1 class="mb-4">Thank You!</h1>
+
+  <h4>Here's your gift card code: {{ giftcardcode }}</h4>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      <img class="card-img-top" src="{{ url_for('static', filename='Images/' ~ gc[3]) }}" alt="{{ gc[1] }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ gc[1] }}</h5>
+        <h6 class="card-title">NZ ${{amount}}</h6>
+      </div>
+    </div>
+  </div>
+
+
+  <strong>This gift card will be delivered to the provided address in 3 working days.</strong>
+</div>
+
+  {% endblock %}
+

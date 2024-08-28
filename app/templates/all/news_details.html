@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block title %}News{% endblock %}{% block content %}
+<div class="container"></div>
+{%if news%}
+<div class="container">
+  <div class="card p-3">
+    <div class="lead">Title: {{news[2]}}</div>
+    <div class="mb-3">News Type: {{news[1]}}</div>
+    <div class="">{{news[3]}}</div>
+    <div class="text-muted border-top pt-4">
+      <small class="me-3"
+        ><i class="fa fa-calendar text-primary me-2"></i>{{news[4]}}</small
+      >
+    </div>
+  </div>
+</div>
+{% endif%} {% endblock %}

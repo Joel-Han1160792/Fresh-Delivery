@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block title %}Add Product{% endblock %}{% block
+content %}
+<div class="container">
+  <a class="btn btn-dark mb-4" href="/manage-products">Back to list</a>
+  <form
+    action="{{ url_for('add_product')}}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div>{{msg}}</div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label" for="photo">Photo</label>
+          <input type="file" name="photo" id="photo" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="name"><h3>Name</h3></label>
+          <input id="name" type="text" name="name" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            id="price"
+            type="number"
+            step="0.01"
+            name="price"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input
+            id="quantity"
+            type="number"
+            name="quantity"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="categroy">Categroy</label>
+          <select class="form-select" id="categroy" name="categroy" required>
+            <option value="" selected>Select Categroy</option>
+            {% for cat in cats %}
+            <option value="{{ cat['CategoryID'] }}">{{ cat['Name'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="unit">Unit</label>
+          <select class="form-select" id="unit" name="unit" required>
+            <option value="" selected>Select Unit</option>
+            {%for unit in units%}
+            <option value="{{unit['UnitID']}}">{{unit['Name']}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

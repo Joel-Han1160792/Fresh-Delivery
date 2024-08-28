@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block title %}Notifications{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Your Notifications</h1>
+  {% if notifications %}
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for notification in notifications %}
+      <tr>
+        <td>{{ notification.Type }}</td>
+        <td>{{ notification.Title }}</td>
+
+        <td>{{ notification.DateCreated | format_date}}</td>
+
+        <td>
+          {% if not notification.HasBeenRead %}
+          <span class="badge bg-danger">Unread</span>
+          {% else %}
+          <span class="badge bg-success">Read</span>
+          {% endif %}
+        </td>
+        <td>
+          <a
+            href="{{ url_for('read_notification_details', notification_id=notification.NotificationID) }}"
+            class="btn btn-primary btn-sm"
+          >
+            View
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You have no notifications.</p>
+  {% endif %}
+</div>
+{% endblock %}

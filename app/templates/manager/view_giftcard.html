@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block title %}Gift Cards{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <h2>Gift Cards</h2>
+
+  <div><h5>Check Gift Card Balance</h5></div>
+  <form action="/checkgcbalance" class="mb-3" method="post">
+    <label>Gift Card Code</label>
+    <input type="text" name="gccode" required />
+    <button type="submit">Search</button>
+  </form>
+
+  {% if balance is not none %}
+  <div class="mb-3">
+    <p>Balance for Gift Card <strong>{{ code }}</strong>: ${{ balance }}</p>
+  </div>
+  {% endif %}  
+   {% if session.get('role') == 4 %}
+  <a href="/viewallgc" class="btn btn-primary mb-3">View All Gift Cards</a>
+  <a href="/addgiftcard" class="btn btn-primary mb-3">Add Gift Card</a>
+  {% endif %}
+
+  <div class="row">
+    {% for gc in giftcard %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          class="card-img-top"
+          src="{{ url_for('static', filename='Images/' ~ gc[3]) }}"
+          alt="{{ gc[1] }}"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ gc[1] }}</h5>
+        </div>
+        {% if session.get('role') == 1 %}
+        <div class="card-footer d-flex justify-content-between">
+          <a href="{{url_for('buygiftcard',id=gc[0])}}"> Buy Now </a>
+        </div>
+        {% endif %} {% if session.get('role') == 4 %}
+        <div class="card-footer d-flex justify-content-between">
+          <a
+            href="{{ url_for('editgiftcard', giftcardoptionid=gc[0]) }}"
+            class="btn btn-primary"
+            >Edit</a
+          >
+          <a
+            href="{{ url_for('deletegiftcard', giftcardoptionid=gc[0]) }}"
+            class="btn btn-danger"
+            >Delete</a
+          >
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

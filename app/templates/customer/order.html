@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block title %}Order{% endblock %} {% block
+    content %}
+    <div class="container p-20">
+      <h1 class="mb-4">My Order</h1>
+      <table class="table table-striped table-hover">
+        <tr>
+            <th>Order Number</th>
+            <th>Date Ordered</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th></th>
+
+        </tr>
+        {% for order in orderlist %}
+            <tr>
+                
+                    <td>{{order[0]}}</td>
+                    <td>{{order[1]|format_date}}</td>
+                    <td>{{order[2] | format_nz_currency }}</td>
+                    <td>{{order[3]}}</td>
+                    <td><a href="{{url_for('orderdetail', orderID = order[0])}}">View Details</a></td>
+                    
+        
+            </tr>    
+        {% endfor %}
+      </table>
+  
+
+      {% endblock %}

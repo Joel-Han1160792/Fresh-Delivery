@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block title %}Notifications{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Notifications</h1>
+  <a href="{{ url_for('create_notification') }}" class="btn btn-primary mb-4"
+    >Create New Notification</a
+  >
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Type</th>
+          <th>Title</th>
+          <th>Message</th>
+          <th>Recipient</th>
+          <th>Sender</th>
+          <th>Date Created</th>
+          <th>Expiration Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for notification in notifications %}
+        <tr>
+          <td>{{ notification.Type }}</td>
+          <td>{{ notification.Title }}</td>
+          <td>{{ notification.Message }}</td>
+          <td>
+            {{ notification.RecipientEmail if notification.RecipientEmail else
+            'All Customers' }}
+          </td>
+          <td>{{ notification.SenderEmail }}</td>
+          <td>{{ notification.DateCreated |format_date }}</td>
+          <td>{{ notification.ExpirationDate |format_date }}</td>
+          <td>
+            <a
+              href="{{ url_for('edit_notification', notification_id=notification.NotificationID) }}"
+              class="btn btn-warning btn-sm"
+              >Edit</a
+            >
+            <form
+              action="{{ url_for('delete_notification', notification_id=notification.NotificationID) }}"
+              method="post"
+              style="display: inline"
+            >
+              <button
+                type="submit"
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete this notification?');"
+              >
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

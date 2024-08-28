@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Local Staff List{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Staff List</h1>
+    <!-- <a  class="btn btn-success">Add New Staff</a> -->
+  </div>
+  <form id="searchForm" method="post" class="form-inline mb-4">
+    <div class="row align-items-center">
+      <div class="col-lg-4 col-md-6 mb-2">
+        <input type="text" name="name" class="form-control" placeholder="Search by name" />
+      </div>
+      <div class="col-lg-auto mb-2">
+        <button type="submit" class="btn btn-primary rounded-pill">Search</button>
+      </div>
+      <div class="col-lg-auto mb-2">
+        <button type="reset" class="btn btn-secondary rounded-pill" onclick="document.getElementById('searchForm').reset();">
+          Clear
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Staff Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Location</th>
+          <th>Department</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for staff in local_staff %}
+        <tr class="{{ 'table-danger' if staff[8] == 'Inactive' else '' }}">
+          <td>{{ staff[1] }} {{ staff[2] }}</td>
+          <td>{{ staff[3] }}</td>
+          <td>{{ staff[4] }}</td>
+          <td>{{ staff[5] }}</td>
+          <td>{{ staff[7] }}</td>
+          <td>
+            <form method="POST" action="/update_status" id="status-{{ staff[0] }}">
+              <input type="hidden" name="userID" value="{{ staff[0] }}">
+              <select name="status" class="form-select" onchange="this.form.submit();"
+        {% if staff[7] == "National Manager" %}disabled{% endif %}>
+    <option value="Active" {% if staff[8] == 'Active' %}selected{% endif %}>Active</option>
+    <option value="Inactive" {% if staff[8] != 'Active' %}selected{% endif %}>Inactive</option>
+</select>
+
+            </form>
+          </td>
+          <td>
+            {% if staff[8] == 'Active' and staff[7] != "National Manager" %}
+                <a href="/update_info/{{ staff[0] }}" class="btn btn-warning">Edit</a>
+            {% endif %}
+        </td>
+        
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

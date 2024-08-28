@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4 profile">
+<div class="card mt-4">
+
+    <div class="card-header bg-custom-primary text-black">Profile Details</div>
+    <ul class="list-group list-group-flush">
+    {% if profile_customer %}
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Whole Name:</strong> {{ profile_customer[1] }} {{ profile_customer[2] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Location:</strong> {{ profile_customer[3] }}
+     </li>
+      <li class="list-group-item">
+         <strong style="padding-right: 20px;">Address:</strong> {{ profile_customer[5] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Email:</strong> {{ profile_customer[6] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Phone:</strong> {{ profile_customer[7] }}
+      </li>
+      <li class="list-group-item">
+        <div class="button-container ">
+        <a href="{{ url_for('update_info', userID = profile_customer[0])}}" class="btn btn-primary btn-lg custom-link button-updating">Update Your Information</a>
+      </div>
+      </li>
+      <li class="list-group-item">
+        <div class="button-container ">
+        <a href="{{ url_for('update_pwd', userID = profile_customer[0])}}" class="btn btn-primary btn-lg custom-link button-updating">Update Your Password</a>
+      </div>
+      </li>
+    </ul>
+  </div>
+
+      {% else %}
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Whole Name:</strong> {{ profile_staff[1] }} {{ profile_staff[2] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Email:</strong> {{ profile_staff[3] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Phone:</strong> {{ profile_staff[4] }}
+      </li>
+      <li class="list-group-item">
+        <strong style="padding-right: 20px;">Location:</strong> {{ profile_staff[5] }}
+     </li>
+     <li class="list-group-item">
+      <strong style="padding-right: 20px;">Department:</strong> {{ profile_staff[7] }}
+   </li>
+     <li class="list-group-item">
+      <div class="button-container">
+      <a href="{{ url_for('update_info', userID = profile_staff[0]) }}" class="btn btn-primary btn-lg custom-link button-updating">Update Your Information</a>
+    </div>
+    </li>
+    <li class="list-group-item">
+      <div class="button-container">
+      <a href="{{ url_for('update_pwd', userID = profile_staff[0]) }}" class="btn btn-primary btn-lg custom-link button-updating">Update Your Password</a>
+    </div>
+    </li>
+  </ul>
+</div>
+
+      {% endif %}
+
+</div>
+
+{% endblock %}

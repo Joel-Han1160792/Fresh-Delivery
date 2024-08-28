@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block title %}View Credit Limits{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2>Your Credit Information</h2>
+  <div class="mb-3">
+    <label class="form-label">Credit Limit:</label>
+    <p>{{ credit_info.CreditLimit | format_nz_currency }}</p>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Remaining Credit:</label>
+    <p>{{ credit_info.RemainingCredit | format_nz_currency }}</p>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Invoice Due Date:</label>
+    <p>{{ credit_info.InvoiceDueDate | format_date }}</p>
+  </div>
+  <a href="{{ url_for('request_credit_increase') }}" class="btn btn-primary"
+    >Request Credit Limit Increase</a
+  >
+</div>
+{% endblock %}

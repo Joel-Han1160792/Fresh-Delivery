@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block title %}Order Details{% endblock %} {% block
+content %}
+<div class="container p-20">
+  <h1 class="mb-4">Order Details</h1>
+  <table class="table table-striped table-hover mb-3">
+    <tr>
+      <th>Order Number</th>
+      <th>Date Ordered</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>{{ detail[0].OrderID }}</td>
+      <td>{{ detail[0].DateOrdered | format_date }}</td>
+      <td>{{ detail[0].StatusName }}</td>
+    </tr>
+  </table>
+  <h3 class="mb-4">Items</h3>
+  <table class="table table-striped table-hover mb-3">
+    <tr>
+      <th>Name</th>
+      <th>Unit</th>
+      <th>Unit Price</th>
+      <th>Quantity</th>
+      <th>Total Price</th>
+    </tr>
+    {% for item in detail %}
+    <tr>
+      <td>{{ item.Name }}</td>
+      <td>{{ item.Unit }}</td>
+      <td>{{ item.UnitPrice | format_nz_currency }}</td>
+      <td>{{ item.Quantity }}</td>
+      <td>{{ (item.UnitPrice * item.Quantity) | format_nz_currency }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h3 class="mb-4">Price Breakdown</h3>
+  <table class="table table-striped table-hover mb-3">
+    <tr>
+      <th>Subtotal:</th>
+      <td>
+        {{ (detail[0].TotalPrice | float - detail[0].ShippingPrice | float) |
+        format_nz_currency }}
+      </td>
+    </tr>
+    <tr>
+      <th>Shipping Price:</th>
+      <td>
+        {{ detail[0].ShippingPrice | default(0.00) | format_nz_currency }}
+      </td>
+    </tr>
+    <tr>
+      <th>Total Price:</th>
+      <td>{{ detail[0].TotalPrice | format_nz_currency }}</td>
+    </tr>
+  </table>
+
+  <a
+    href="{{ url_for('order_again', orderID=detail[0].OrderID) }}"
+    class="btn btn-primary rounded-pill mb-2 mb-lg-0"
+  >
+    Order Again
+  </a>
+</div>
+{% endblock %}

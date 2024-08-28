@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block title %}Request Credit Limit Increase{%
+endblock %} {% block content %}
+<div class="container mt-5">
+  <h2>Request Credit Limit Increase</h2>
+  <form action="{{ url_for('request_credit_increase') }}" method="post">
+    <div class="mb-3">
+      <label for="requested_amount" class="form-label">Requested Amount</label>
+      <input
+        type="number"
+        class="form-control"
+        id="requested_amount"
+        name="requested_amount"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="reason" class="form-label">Reason</label>
+      <textarea
+        class="form-control"
+        id="reason"
+        name="reason"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Request</button>
+  </form>
+</div>
+{% endblock %}

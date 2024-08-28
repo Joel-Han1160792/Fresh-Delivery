@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block title %}Add Category{% endblock %} {% block content %}
+<div class="container mt-4">
+  <a href="{{ url_for('view_categories') }}" class="btn btn-light btn-sm">
+    <i class="fas fa-arrow-left"></i> Back
+  </a>
+  <h2>Add Category</h2>
+  <form method="POST" action="{{ url_for('add_category') }}">
+    <div class="mb-3">
+      <label for="name" class="form-label">Category Name</label>
+      <input type="text" class="form-control" id="name" name="name" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Category</button>
+  </form>
+</div>
+{% endblock %}

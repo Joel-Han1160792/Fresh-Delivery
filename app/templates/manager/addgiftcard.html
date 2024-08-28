@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %}Add Gift Card{% endblock %}{% block
+content %}
+<div class="container">
+  <a class="btn btn-dark mb-4" href="/giftcard">Back to list</a>
+  <form
+    action="{{ url_for('addgiftcard')}}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div>{{msg}}</div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label" for="photo">Photo</label>
+          <input type="file" id="photo" name="photo" required />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="name"><h3>Gift Card Name</h3></label>
+          <input type="text" name="name" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Value</label>
+          <input
+            id="price"
+            type="number"
+            step="0.01"
+            name="value"
+            class="form-control"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block title %}My Invoices{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <h2>My Invoices</h2>
+
+  {% if invoices %}
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Invoice ID</th>
+        <th>Invoice Date</th>
+        <th>Due Date</th>
+        <th>Total Amount</th>
+        <th>GST Amount</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for invoice in invoices %}
+      <tr>
+        <td>{{ invoice.InvoiceID }}</td>
+        <td>{{ invoice.InvoiceDate | format_date }}</td>
+        <td>{{ invoice.DueDate }}</td>
+        <td>{{ invoice.TotalAmount | format_nz_currency }}</td>
+        <td>{{ invoice.GSTAmount | format_nz_currency }}</td>
+        <td>{{ invoice.Status }}</td>
+        <td>
+          <a
+            href="{{ url_for('invoice_details', invoice_id=invoice.InvoiceID) }}"
+            class="btn btn-primary"
+            >View Details</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No invoices found.</p>
+  {% endif %}
+</div>
+{% endblock %}

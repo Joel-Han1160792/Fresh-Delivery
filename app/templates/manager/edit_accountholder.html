@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Edit Credit Limit{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Edit Account for {{ account_holder.FirstName }} {{ account_holder.LastName }}</h2>
+  <form action="{{ url_for('EditAccountHolder', id=account_holder.AccountHolderID) }}" method="post">
+    <input type="hidden" name="AccountHolderID" value="{{ account_holder.AccountHolderID }}">
+
+    <div class="mb-3">
+      <label for="BusinessName" class="form-label">Business Name:</label>
+      <input type="text" class="form-control" id="BusinessName" name="BusinessName" value="{{ account_holder.BusinessName }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="BusinessAddress" class="form-label">Business Address:</label>
+      <input type="text" class="form-control" id="BusinessAddress" name="BusinessAddress" value="{{ account_holder.BusinessAddress }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="BusinessContactNumber" class="form-label">Business Contact Number:</label>
+      <input type="text" class="form-control" id="BusinessContactNumber" name="BusinessContactNumber" value="{{ account_holder.BusinessContactNumber }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="InvoiceDueDate" class="form-label">Invoice Due Date:</label>
+      <input type="date" class="form-control" id="InvoiceDueDate" name="InvoiceDueDate" value="{{ account_holder.InvoiceDueDate }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="ApplicationStatus" class="form-label">Application Status:</label>
+      <select class="form-select" id="ApplicationStatus" name="ApplicationStatus" required>
+        <option value="Pending" {% if account_holder.ApplicationStatus == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Approved" {% if account_holder.ApplicationStatus == 'Approved' %}selected{% endif %}>Approved</option>
+        <option value="Rejected" {% if account_holder.ApplicationStatus == 'Rejected' %}selected{% endif %}>Rejected</option>
+        <option value="Not Applied" {% if account_holder.ApplicationStatus == 'Not Applied' %}selected{% endif %}>Not Applied</option>
+      </select>
+    </div>
+    
+    <input type="submit" class="btn btn-primary" value="Update">
+  </form>
+</div>
+{% endblock %}

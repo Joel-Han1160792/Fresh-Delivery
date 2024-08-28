@@ -1,0 +1,168 @@
+{% extends 'base.html' %} {% block title %}Order List{% endblock %} {% block
+content %}
+<div class="container p-20">
+  <h1 class="mb-4">Order List</h1>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <form id="searchForm" method="get" class="form-inline mb-5">
+        <div class="row">
+          <div class="col-lg-8 col-md-6 mr-2">
+            <input
+              type="text"
+              name="username"
+              class="form-control mb-2 mr-sm-2"
+              placeholder="Search by username or email"
+            />
+          </div>
+          <div class="col-lg-8 col-md-6 mr-2">
+            <input
+              type="date"
+              name="date"
+              class="form-control mb-2 mr-sm-2"
+              placeholder="Search by Date"
+            />
+          </div>
+          <div class="col-lg-2 col-md-6 ml-2">
+            <select name="statusID" class="form-select mb-2 mr-sm-2">
+              <option value="">Status</option>
+              {% for sta in status %}
+              <option value="{{ sta['statusID'] }}">
+                {{ sta['statusName'] }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-auto">
+            <button
+              type="submit"
+              class="btn btn-primary rounded-pill mb-2 mb-lg-0"
+            >
+              Search
+            </button>
+            <button
+              type="reset"
+              class="btn btn-secondary rounded-pill"
+              onclick="clearFilters()"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% if orders %}
+    <div class="wow fadeInUp" data-wow-delay="0.1s">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Order Number</th>
+              <th scope="col">Username</th>
+              <th scope="col">Status</th>
+              <th scope="col">Total Price</th>
+              <th scope="col">Location</th>
+              <th scope="col">Date Ordered</th>
+              <th scope="col">Order Update Date</th>
+              <th scope="col"></th>
+              <!-- u.Email, o.StatusID, os.StatusName, TotalPrice, l.Name, l.Address, DateOrdered, OrderID, o.UserID  -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <!-- <th scope="row"><a href="/update-order/{{order['OrderID']}}">#{{order['OrderID']}}</a></th> -->
+              <th scope="row">#{{order['OrderID']}}</th>
+              <td>{{order['Email']}}</td>
+              <td>
+                <form
+                  class="orderStatusForm"
+                  action="{{ url_for('update_order', order_id=order['OrderID']) }}"
+                  method="POST"
+                  class="text-body"
+                >
+                  <select
+                    class="statusInputDropdown"
+                    name="statusInputDropdown"
+                    data-orderID="{{order['OrderID']}}"
+                    class="form-select mb-2 mr-sm-2"
+                  >
+                    <option value="">Status</option>
+                    {% for sta in status %} {%if
+                    order['StatusID']==sta['statusID'] %}
+                    <option selected value="{{ sta['statusID'] }}">
+                      {{ sta['statusName'] }}
+                    </option>
+                    {%else%}
+                    <option value="{{ sta['statusID'] }}">
+                      {{ sta['statusName'] }}
+                    </option>
+                    {%endif%} {% endfor %}
+                  </select>
+                </form>
+              </td>
+              <td>{{order['TotalPrice']| format_nz_currency}}</td>
+              <td>{{order['Location']}}</td>
+              <td>{{order['DateOrdered']| format_date}}</td>
+              <td>
+                {%if order['DateUpdated']%} {{order['DateUpdated']|format_date}} {%endif%}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+      <div class="alert alert-warning" role="alert">No orders found.</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+$(document).ready(function () {
+
+    $(".statusInputDropdown").each(function() {
+        $(this).data('current', $(this).val());
+    });
+
+    $(".statusInputDropdown").change(function () {
+        var order_id = $(this).data("orderID");
+        var $select = $(this);  
+        if (confirm("Are you sure you want to change this order's status?")) {
+            $select.data('current', $select.val()); 
+            $select.closest(".orderStatusForm").submit(); 
+        } else {
+            
+            $select.val($select.data('current'));
+        }
+    });
+});
+
+
+
+
+
+
+  function clearFilters() {
+    document.getElementById("searchForm").reset();
+    window.location.href = window.location.pathname;
+  }
+</script>
+
+<script type="text/javascript">
+  function confirmDelete(event, url) {
+    if (confirm("Are you sure you want to delete this order?")) {
+      window.location.href = url;
+    } else {
+      event.preventDefault();
+    }
+  }
+</script>
+{% endblock %}

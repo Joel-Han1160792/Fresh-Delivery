@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block title %}View Credit Requests{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h2>Credit Limit Increase Requests</h2>
+  {% if credit_requests %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Full Name</th>
+        <th>Requested Amount</th>
+        <th>Reason</th>
+        <th>Request Time</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in credit_requests %}
+      <tr>
+        <td>{{ request.Email }}</td>
+        <td>{{ request.FirstName }} {{ request.LastName }}</td>
+        <td>{{ request.RequestedAmount | format_nz_currency }}</td>
+        <td>{{ request.Reason }}</td>
+        <td>{{ request.RequestTime | format_date }}</td>
+        <td>
+          <form
+            action="{{ url_for('approve_credit_request', request_id=request.RequestID) }}"
+            method="post"
+            style="display: inline-block"
+          >
+            <button
+              type="submit"
+              class="btn btn-success"
+              onclick="return confirm('Are you sure you want to approve this request?')"
+            >
+              Approve
+            </button>
+          </form>
+          <form
+            action="{{ url_for('reject_credit_request', request_id=request.RequestID) }}"
+            method="post"
+            style="display: inline-block"
+          >
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="return confirm('Are you sure you want to reject this request?')"
+            >
+              Reject
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No credit limit increase requests found.</p>
+  {% endif %}
+</div>
+{% endblock %}

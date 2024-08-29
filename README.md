@@ -1,1 +1,2 @@
-# COMP639S1_Project_2_Group_AX
+# A group project with 4 classmates
+## Bootstrap, CSS, html, Flask(Python), Javascript are used for development
